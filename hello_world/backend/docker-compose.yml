@@ -1,0 +1,77 @@
+version: '3.9'
+
+ 
+
+networks:
+
+  backend-network:
+
+    ipam:
+
+      config:
+
+        - subnet: 172.20.0.0/24
+
+ 
+
+services:
+
+  backend:
+
+    depends_on:
+
+      - postgres
+
+    build:
+
+      context: ./
+
+      dockerfile: Dockerfile
+
+    ports:
+
+      - "8080:8080"
+
+    environment:
+
+      - DATABASE_DRIVER=org.postgresql.Driver
+
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/db
+
+      - POSTGRES_USER=user
+
+      - POSTGRES_PASSWORD=password
+
+    networks:
+
+      backend-network:
+
+        ipv4_address: 172.20.0.2
+
+ 
+
+  postgres:
+
+    image: postgres:14-alpine
+
+    ports:
+
+      - "5432:5432"
+
+    volumes:
+
+      - ~/apps/postgres:/var/lib/postgresql/data
+
+    environment:
+
+      - POSTGRES_PASSWORD=password
+
+      - POSTGRES_USER=user
+
+      - POSTGRES_DB=db
+
+    networks:
+
+      backend-network:
+
+        ipv4_address: 172.20.0.3
