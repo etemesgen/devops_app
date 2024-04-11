@@ -11,3 +11,5 @@ kubectl apply -f database/database-secrets.yaml
 kubectl apply -f database/database-volume.yaml
 kubectl apply -f database/database-config-map.yaml
 minikube image build -t helloworld:0.0.1 .
+kubectl apply -f backend-deployment.yaml
+kubectl apply -f backend-service.yaml
